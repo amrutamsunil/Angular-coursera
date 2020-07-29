@@ -1,3 +1,4 @@
+import { ProcessHTTPMsgService } from "./services/process-httpmsg.service";
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -18,6 +19,7 @@ import { FormsModule } from "@angular/forms";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatSliderModule } from "@angular/material/slider";
+import { HttpClientModule } from "@angular/common/http";
 import "hammerjs";
 
 import { AppComponent } from "./app.component";
@@ -33,7 +35,7 @@ import { DishService } from "./services/dish.service";
 import { PromotionService } from "./services/promotion.service";
 import { LeaderService } from "./services/leader.service";
 import { LoginComponent } from "./login/login.component";
-
+import { baseURL } from "./shared/baseurl";
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,6 +54,7 @@ import { LoginComponent } from "./login/login.component";
     MatToolbarModule,
     FlexLayoutModule,
     AppRoutingModule,
+    HttpClientModule,
     MatListModule,
     MatGridListModule,
     MatCardModule,
@@ -68,7 +71,13 @@ import { LoginComponent } from "./login/login.component";
     MatSliderModule,
   ],
   entryComponents: [LoginComponent],
-  providers: [DishService, PromotionService, LeaderService],
+  providers: [
+    DishService,
+    PromotionService,
+    LeaderService,
+    ProcessHTTPMsgService,
+    { provide: "BaseURL", useValue: baseURL },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
