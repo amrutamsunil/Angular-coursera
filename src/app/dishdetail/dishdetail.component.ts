@@ -14,6 +14,7 @@ import { Comment } from "../shared/comment";
 })
 export class DishdetailComponent implements OnInit {
   dish: Dish;
+  dishCopy: Dish;
   dishIds: string[];
   prev: string;
   next: string;
@@ -49,6 +50,7 @@ export class DishdetailComponent implements OnInit {
       .subscribe(
         (dish) => {
           this.dish = dish;
+          this.dishCopy = dish;
           this.setPrevNext(dish.id);
         },
         (errmess) => (this.errMess = <any>errmess)
@@ -119,8 +121,18 @@ export class DishdetailComponent implements OnInit {
     const da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
     const date = mo + " " + da + "," + ye;
     this.comment.date = date;
-    this.dish.comments.push(this.comment);
-
+    this.dishCopy.comments.push(this.comment);
+    this.dishservice.putDish(this.dishCopy).subscribe(
+      (dish) => {
+        this.dish = dish;
+        this.dishCopy = dish;
+      },
+      (errmess) => {
+        this.dish = null;
+        this.dishCopy = null;
+        this.errMess = <any>errmess;
+      }
+    );
     this.commentForm.reset({
       author: "",
       rating: "5",
